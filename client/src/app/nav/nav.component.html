@@ -31,7 +31,7 @@
         alt="user main image"
       />
       <a dropdownToggle class="dropdown-toggle text-light text-decoration-none"
-        >Welcom {{ accountService.currentUser()?.username | titlecase }}</a
+        >Welcom {{ accountService.currentUser()?.knownAs }}</a
       >
       <div *dropdownMenu class="dropdown-menu">
         <a routerLink="/member/edit" class="dropdown-item">Edit profile</a>
