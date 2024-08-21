@@ -5,6 +5,15 @@ using AutoMapper;
 
 namespace API.Helpers;
 
+
+public class DateTimeTypeConverter : ITypeConverter<string, DateTime>
+{
+    public DateTime Convert(string source, DateTime destination, ResolutionContext context)
+    {
+        return System.Convert.ToDateTime(source);
+    }
+}
+
 public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
@@ -16,5 +25,7 @@ public class AutoMapperProfiles : Profile
                 o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain)!.Url));
         CreateMap<Photo, PhotoDto>();
         CreateMap<MemberUpdateDto, AppUser>();
+        CreateMap<RegisterDto, AppUser>();
+        CreateMap<string, DateTime>().ConvertUsing<DateTimeTypeConverter>();
     }
 }
