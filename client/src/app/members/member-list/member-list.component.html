@@ -15,7 +15,7 @@
           style="width: 70px"
           class="form-control ms-1"
           name="minAge"
-          [(ngModel)]="userParams.minAge"
+          [(ngModel)]="memberService.userParams().minAge"
         />
       </div>
 
@@ -26,7 +26,7 @@
           style="width: 70px"
           class="form-control ms-1"
           name="maxAge"
-          [(ngModel)]="userParams.maxAge"
+          [(ngModel)]="memberService.userParams().maxAge"
         />
       </div>
 
@@ -36,7 +36,7 @@
           name="gender"
           style="width: 130px"
           class="form-select ms-1"
-          [(ngModel)]="userParams.gender"
+          [(ngModel)]="memberService.userParams().gender"
         >
           @for (gender of genderList; track gender.value) {
           <option [value]="gender.value">{{ gender.display }}</option>
@@ -48,6 +48,31 @@
       <button (click)="resetFilters()" class="btn btn-info ms-1" type="button">
         Reset filters
       </button>
+
+      <div class="col">
+        <div class="btn-group float-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            name="orderBy"
+            (click)="loadMembers()"
+            btnRadio="lastActive"
+            [(ngModel)]="memberService.userParams().orderBy"
+          >
+            Last Actibe
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            name="orderBy"
+            (click)="loadMembers()"
+            btnRadio="created"
+            [(ngModel)]="memberService.userParams().orderBy"
+          >
+            Newest Members
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 
@@ -65,6 +90,7 @@
     [totalItems]="(memberService.paginatedResult()?.pagination)!.totalItems"
     [itemsPerPage]="(memberService.paginatedResult()?.pagination)!.itemsPerPage"
     (pageChanged)="pageChanged($event)"
+    [(ngModel)]="(memberService.paginatedResult()?.pagination)!.currentPage"
     [maxSize]="10"
     previousText="&lsaquo;"
     nextText="&rsaquo;"
