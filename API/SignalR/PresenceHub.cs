@@ -12,8 +12,8 @@ public class PresenceHub(PresenceTracker presenceTracker) : Hub
     {
         if (Context.User == null) throw new HubException("Cannot get curent user claim");
 
-        await presenceTracker.UserConnected(Context.User.GetUserName(), Context.ConnectionId);
-        await Clients.Others.SendAsync("UserIsOnline", Context.User?.GetUserName());
+        var isOnline = await presenceTracker.UserConnected(Context.User.GetUserName(), Context.ConnectionId);
+        if (isOnline) await Clients.Others.SendAsync("UserIsOnline", Context.User?.GetUserName());
 
         var currentUsers = await presenceTracker.GetOnlineUsers();
         await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
@@ -23,8 +23,8 @@ public class PresenceHub(PresenceTracker presenceTracker) : Hub
     {
         if (Context.User == null) throw new HubException("Cannot get curent user claim");
 
-        await presenceTracker.UserDisconnected(Context.User.GetUserName(), Context.ConnectionId);
-        await Clients.Others.SendAsync("UserIsOffline", Context.User?.GetUserName());
+        var isOffline = await presenceTracker.UserDisconnected(Context.User.GetUserName(), Context.ConnectionId);
+        if (isOffline) await Clients.Others.SendAsync("UserIsOffline", Context.User?.GetUserName());
 
         var currentUsers = await presenceTracker.GetOnlineUsers();
         await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
